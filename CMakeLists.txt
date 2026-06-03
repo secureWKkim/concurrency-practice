@@ -9,4 +9,5 @@ add_executable(concurrency_practice main.c
         semaphore.c
         semaphore_posix.c
         barrier_pthreads.c
-        rwlock_spinlock.c)
+        rwlock_spinlock.c
+        rwlock_pthreads.c)
