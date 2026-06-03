@@ -32,3 +32,25 @@ void rwlock_write_release(bool *lock, int *wcnt) {
     __sync_fetch_and_sub(wcnt, 1);
 }
 
+
+//이하는 활용 예시.
+//공유 변수
+int rcnt = 0;
+int wcnt = 0;
+bool lock = false;
+
+void reader(void *arg) {
+    for (;;) {
+        rwlock_read_acquire(&rcnt, &wcnt);
+        //critical section (only read)
+        rwlock_read_release(&rcnt);
+    }
+}
+
+void writer(void *arg) {
+    for (;;) {
+        rwlock_write_acquire(&lock, &rcnt, &wcnt);
+        //critical section (read & write)
+        rwlock_write_release(&lock, &wcnt);
+    }
+}
