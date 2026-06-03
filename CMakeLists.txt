@@ -6,4 +6,6 @@ set(CMAKE_C_STANDARD 23)
 add_executable(concurrency_practice main.c
         good_mutex.c
         pthread_mutex.c
-        semaphore.c)
+        semaphore.c
+        posix_semaphore.c
+        barrier_pthreads.c)
