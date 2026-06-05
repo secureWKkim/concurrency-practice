@@ -2,11 +2,7 @@
    해당 조건이 만족되지 않았음에도 불구하고 실행 상태로 변경되는 것.
    아래는 의사 각성 발생 예시. */
 
-#include <pthread.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "concurrency_bugs.h"
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;

@@ -2,11 +2,7 @@
 * 단순 뮤텍스 구현에 대해 재귀락을 수행하면 데드락 상태가 된다.
 * 재귀락을 수행해도 처리를 계속할 수 있는 락을 재진입 가능한 락이라고 한다. */
 
-#include <assert.h>
-#include <pthread.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "concurrency_bugs.h"
 
 struct reentrant_lock
 {
