@@ -18,7 +18,7 @@ void* func_for_thread(void* arg) {
     return NULL;
 }
 
-int pthread_mutex_example(int argc, char* argv[]) {
+extern int pthread_mutex_example(int argc, char* argv[]) {
     //스레드 생성
     pthread_t th1, th2;
     if (pthread_create(&th1, NULL, func_for_thread, NULL) != 0) {
