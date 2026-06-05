@@ -38,3 +38,37 @@ void reentlock_release(struct reentrant_lock *lock) {
   }
 }
 
+
+//이하는 사용 예시
+struct reentrant_lock lock_var;  //락용 공용 변수
+
+// n회 재귀적으로 호출해 락을 거는 테스트 함수
+void reent_lock_test(int id, int n) {
+  if (n==0) return;
+
+  reentlock_acquire(&lock_var, id);
+  reent_lock_test(id, n-1);
+  reentlock_release(&lock_var);
+}
+
+//스레드용 함수
+void *thread_func(void *arg) {
+  int id = *(int *)arg;
+  assert(id!=0);
+  for (int i=0; i<10000; i++)
+    reent_lock_test(id,10);
+  return NULL;
+}
+
+
+
+int example(int argc, char* argv[]) {
+  #define NUM_THREADS 10
+
+  pthread_t v[NUM_THREADS];
+  for (int i = 0; i < NUM_THREADS; i++)
+    pthread_create(&v[i], NULL, thread_func, (void *)(i+1));
+  for (int i = 0; i < NUM_THREADS; i++)
+    pthread_join(v[i], NULL);
+  return 0;
+}
