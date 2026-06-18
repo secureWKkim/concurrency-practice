@@ -35,5 +35,24 @@ void *worker(void *arg) {
 }
 
 int example2(int argc, char *argv[]) {
+  pid_t pid = getpid();
+  printf("pid=%d\n", pid);
+
+  /* SIGUSR1 시그널을 블록으로 설정. sigaddset 함수에서 수신한 시그널의 종류를 지정하고, 해당 시그널을 pthread_sigmask
+   함수를 이용해 블록으로 설정한다. 어떤 시그널을 블록으로 설정하면 해당 시그널이 프로세스에 송신되어도 시그널 핸들러가 실행되지 않는다.
+   그리고 이 설정은 이후 작성하는 스레드에도 이어지므로 example2 함수의 가장 처음에 실행한다.
+   */
+  sigemptyset(&set);
+  sigaddset(&set, SIGUSR1);
+  if (pthread_sigmask(SIG_BLOCK, &set, NULL) != 0) {
+    perror("pthread_sigmask");
+    return 1;
+  }
+
+  pthread_t th, wth;
+  pthread_create(&th, NULL, handler, NULL);
+  pthread_create(&wth, NULL, worker, NULL);
+  pthread_join(wth, NULL);
+
   return 0;
 }
