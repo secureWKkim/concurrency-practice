@@ -1,7 +1,7 @@
 // 스핀락은 직접 구현하는 것보다 라이브러리에서 제공하는 뮤텍스를 이용하는 것이 바람직하다. 아래는 이용 예시다.
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h>  //exit(), malloc(), free() 같은 기본 유틸리티 함수들을 모아놓은 헤더
 #include <pthread.h>
 
 //뮤텍스용 공유 변수. PTHREAD_MUTEX_INITIALIZER는 매크로다.
