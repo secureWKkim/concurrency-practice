@@ -1,5 +1,4 @@
 #include <pthread.h>  //posix 세마포어는 이 라이브러리를 포함시키면 컴파일 및 실행 가능하다.
-#include <fcntl.h>
 #include <sys/stat.h>
 #include <semaphore.h>
 #include <stdio.h>
@@ -12,7 +11,10 @@
 int cnt = 0;  //각 스레드 안에서 증감할 글로벌 변수 정의
 
 void* func_for_thread(void* arg) {
-    //스레드에서 이름이 붙은 세마포어를 생성한다.
+    /*스레드에서 이름이 붙은 세마포어를 생성한다. 두 번째 인자 0은 oflag 입니다.
+  oflag에 O_CREAT를 넘기면 세마포어를 새로 만들고, 0을 넘기면 이미 존재하는 세마포어를 열기만 합니다.
+  func_for_thread에서는 메인에서 이미 만들어놨으니 그냥 열기만 하면 되는 거예요.
+     */
     sem_t *s = sem_open("/mysemaphore", 0);
     if (s == SEM_FAILED) {
         perror("sem_open");
@@ -50,12 +52,11 @@ void* func_for_thread(void* arg) {
 
 
 int posix_semaphore_example(int argc, char* argv[]) {
-    /* 이름이 붙은 세마포어를 연다.
-     * 세마포어가 없으면 생성한다. 0_CREAT를 지정하면, 이미 해당 이름의 세마포어가 존재할 땐 생성하지 않고 열기만 한다.
-     * 자신과 그룹이 이용할 수 있는 세마포어로, 크리티컬 섹션에 들어갈 수 있는 프로세스는 최대 3개다.
+    /* 이름이 붙은 세마포어를 연다. 자신과 그룹이 이용할 수 있는 세마포어다.
+     * oflag 인자. O_CREAT → 세마포어가 없으면 새로 생성, 0 → 기존 것만 열기
      * 0660은 권한을 의미하며, 유닉스 계열 OS의 파일 권한과 동일하다. 여기선 OS 프로세스의 소유자와 그룹이 읽고 쓸 수 있도록 지정한다.
-     * 3은 락을 동시에 획득할 수 있는 프로세스의 상한이다. */
-    sem_t *s = sem_open("/mysemaphore", 0_CREAT, 0660, 3);
+     * 3은 락을 동시에 획득할 수 있는 프로세스의 상한이다. 정확히는 세마포어 초기값 = 크리티컬 섹션에 동시 진입 가능한 프로세스 수 */
+    sem_t *s = sem_open("/mysemaphore", O_CREAT, 0660, 3);
     if (s == SEM_FAILED) {
         perror("sem_open");
         return 1;
