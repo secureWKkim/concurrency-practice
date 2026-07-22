@@ -1,3 +1,0 @@
-C:/Users/HP/Documents/Projects/WKK/concurrency-practice/cmake-build-debug/CMakeFiles/concurrency_practice.dir
-C:/Users/HP/Documents/Projects/WKK/concurrency-practice/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/HP/Documents/Projects/WKK/concurrency-practice/cmake-build-debug/CMakeFiles/rebuild_cache.dir
